@@ -1,0 +1,175 @@
+<!--------------ts-------------->
+import { Component, OnInit } from '@angular/core';
+
+
+
+@Component({
+  selector: 'app-crud',
+  templateUrl: './crud.component.html',
+  styleUrls: ['./crud.component.css']
+})
+export class CrudComponent implements OnInit {
+
+
+  
+    newEmployeeClicked = false;
+  
+    employees = [
+      { name: 'mani', position: 'Front-End Dev'},
+      { name: 'Rojendar', position: 'Recruiter Manager'},
+      { name: 'ManiRojendar', position: 'Ui developer'}
+    ];
+  
+    color;
+  
+    constructor() { }
+  
+    ngOnInit() {
+  
+    }
+  
+    model: any = {};
+    model2: any = {}; 
+  
+    addEmployee() {
+      this.employees.push(this.model);
+      this.model = {};
+    }
+  
+    deleteEmployee(i) {
+      this.employees.splice(i,1);
+      console.log(i);
+    }
+  
+    myValue;
+  
+    editEmployee(editEmployeeInfo) {
+      this.model2.name = this.employees[editEmployeeInfo].name;
+      this.model2.position = this.employees[editEmployeeInfo].position;
+      this.myValue = editEmployeeInfo;
+    }
+  
+    updateEmployee() {
+      let editEmployeeInfo = this.myValue;
+      for(let i = 0; i < this.employees.length; i++) {
+        if(i == editEmployeeInfo) {
+          this.employees[i] = this.model2;
+          this.model2 = {};
+        }
+      }
+    }
+
+    addNewEmployeeBtn() {
+      this.newEmployeeClicked = !this.newEmployeeClicked;
+    }
+  
+     changeColorOne() {
+       this.color = !this.color;
+       if (this.color) {
+         return '#ffffff';
+       } else {
+        return '#f6f6f6';
+       }
+    }
+  
+  
+  }
+
+
+<!---------------------html-------------------->
+
+<div class="container">
+
+     <!-- <label style="color: rgb(13, 16, 182);">Add Employee</label> 
+     &nbsp; &nbsp;
+
+     <button type="button" class="btn btn-success" (click)="addNewEmployeeBtn()">+</button> -->
+<button type="button" class="btn btn-primary" (click)="addNewEmployeeBtn()">Add Patient 
+              <i class="fa fa-plus-circle" aria-hidden="true"></i>
+          </button>
+</div>
+  
+&nbsp; &nbsp;
+  <div *ngIf="newEmployeeClicked">
+  <div class="col-sm-4">
+  <form>
+    <div class="form-group">
+      <!-- <label for="name">Name:</label> -->
+      <input type="text"
+             class="form-control"
+             id="name"
+             name="name"
+             [(ngModel)]="model.name"
+             placeholder="Name">
+    </div>
+  
+     <div class="form-group ">
+      <!-- <label for="position">Position:</label> -->
+      <input type="text"
+             class="form-control "
+             id="position"
+             name="position"
+             [(ngModel)]="model.position"
+             placeholder="Position">
+    </div>
+
+
+
+
+    
+    <div class="submitBtnContainer">
+      <button type="button" class="btn btn-primary"  (click)="addEmployee()">SAVE</button>
+    </div>
+  </form>
+  </div>
+  </div>
+  
+  
+  <div class="container">
+    <H3>View Employee Details</H3>
+    <div class="row">
+    <div class="col-sm-12"></div>
+    <div class="card" style="width: 18rem;" *ngFor="let employee of employees; let i = index" [style.background-color]="changeColorOne()">
+    <div class="one">Name:{{employee.name}}</div>
+    <div class="two">Position:{{employee.position}}</div>
+
+    <br/>
+
+    <div class="three">
+      <button type="button" class="btn btn-primary" (click)="editEmployee(i)">  Edit</button> &nbsp;
+      <button type="button" class="btn btn-danger" (click)="deleteEmployee(i)">Delete</button>
+    </div>
+    <!-- <div class="four"></div> -->
+  </div>
+  </div>
+  </div>
+
+  <br/>
+  
+  <div class="Container">
+    <div class="col-sm-3"><h2>Edit Employee </h2></div>
+  </div>
+  <div class="col-sm-4">
+  <form>
+    <div class="form-group ">
+      <!-- <label for="name">Name:</label> -->
+      <input type="text"
+             class="form-control"
+             id="name"
+             name="name"
+             [(ngModel)]="model2.name"
+             placeholder="Name">
+    </div>
+  
+     <div class="form-group ">
+      <!-- <label for="position">Position:</label> -->
+      <input type="text"
+             class="form-control"
+             id="position"
+             name="position"
+             [(ngModel)]="model2.position"
+             placeholder="Position">
+    </div>
+    <button type="submit"  class="btn btn-info" (click)="updateEmployee()">Update</button>
+  </form>
+  </div>
